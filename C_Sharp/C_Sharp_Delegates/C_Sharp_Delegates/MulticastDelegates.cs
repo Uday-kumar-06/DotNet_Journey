@@ -6,7 +6,7 @@ namespace C_Sharp_Delegates
 {
     public delegate void MyDelegate(string message);
 
-    public delegate void MyReturnTyprDelegate(int a);
+    public delegate int MyReturnTyprDelegate(int a);
     internal class MulticastDelegates
     {
         public void M1(string message)

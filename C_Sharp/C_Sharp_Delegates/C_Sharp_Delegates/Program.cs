@@ -18,9 +18,13 @@ class Program
         multiDel += obj2.M2;
         multiDel("Hello Guys");
 
-        //MyReturnTyprDelegate multiReturnDel = obj2.M3;
-        //multiReturnDel += obj2.M4;
+        MyReturnTyprDelegate multiReturnDel = obj2.M3;
+        multiReturnDel += obj2.M4;
 
-        //Console.WriteLine(multiReturnDel(5));
+        foreach(Delegate del in multiReturnDel.GetInvocationList())
+        {
+            MyReturnTyprDelegate d = (MyReturnTyprDelegate)del;
+            Console.WriteLine(d(5));
+        }
     }
 }
