@@ -24,7 +24,21 @@ class Program
         foreach(Delegate del in multiReturnDel.GetInvocationList())
         {
             MyReturnTyprDelegate d = (MyReturnTyprDelegate)del;
+            
             Console.WriteLine(d(5));
         }
+
+        //built in delegates
+
+        BuiltInDelegates obj3 = new BuiltInDelegates();
+
+        Func<int, int, double, double> addFun = obj3.Add;
+        Console.WriteLine(addFun(10, 12, 5.5));
+
+        Action<int, int, double> addDisplay = obj3.AddDisplay;
+        addDisplay(10, 12, 5.5);
+
+        Predicate<string> isLong = obj3.IsLong;
+        Console.WriteLine(isLong("Hello World"));
     }
 }
