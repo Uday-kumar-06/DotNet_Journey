@@ -40,5 +40,28 @@ class Program
 
         Predicate<string> isLong = obj3.IsLong;
         Console.WriteLine(isLong("Hello World"));
+
+        //Events
+
+        EventDelegates ev = new EventDelegates();
+
+
+        //subscribe to the events
+        ev.MyDelegateMessageEvent += ev.DisplayMessage1;
+        ev.MyDelegateMessageEvent += ev.DisplayMessage2;
+
+        ev.MyDelegateCalculate += ev.DisplaySum;
+        ev.MyDelegateCalculate += ev.DisplayProduct;
+        ev.MyDelegateCalculate += ev.DisplayDifference;
+
+        //publishes or trigger the events
+        ev.TriggerMessageEvent("Hello, Guys How Are You?");
+        ev.TriggerCalculateEvent(5, 10);
+
+        //unsubscribing from the events
+        ev.MyDelegateMessageEvent -= ev.DisplayMessage2;
+
+        //publishes or trigger the events
+        ev.TriggerMessageEvent("Hello, Guys How Are You?");
     }
 }
