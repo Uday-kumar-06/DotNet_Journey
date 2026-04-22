@@ -31,7 +31,8 @@ namespace FileHandling
                     }
                 }
 
-                //File.Delete("test.txt");
+                File.Delete("test.txt");
+                File.Delete("test_copy.txt");
             }
             catch (Exception ex)
             {
