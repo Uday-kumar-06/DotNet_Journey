@@ -2,3 +2,17 @@ GET http://localhost:5251/games
 
 ####
 GET http://localhost:5251/student
+
+####
+GET http://localhost:5251/games/1
+
+####
+POST http://localhost:5251/games
+Content-Type: application/json
+
+{
+    "name":"SuperMario",
+    "genre": "Platform",
+    "price": 59.99,
+    "releaseDate":"2023-10-20"
+}
