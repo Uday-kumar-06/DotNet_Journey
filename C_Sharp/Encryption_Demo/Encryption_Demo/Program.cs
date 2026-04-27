@@ -4,7 +4,6 @@ using Encryption_Demo;
 
 class Program
 {
-    // Acts like a small memory to store users
     static Dictionary<string, string> userStore = new Dictionary<string, string>();
 
     public static void Main(string[] args)
@@ -14,7 +13,6 @@ class Program
 
         while (true)
         {
-            Console.WriteLine("\n==== Welcome ====");
             Console.WriteLine("1. Create Account");
             Console.WriteLine("2. Login");
             Console.WriteLine("3. Exit");
@@ -57,7 +55,6 @@ class Program
         Console.Write("Choose a password: ");
         string password = Console.ReadLine();
 
-        // Encrypt before storing
         encryptor.BasicEncrypt(ref password);
 
         userStore[username] = password;
