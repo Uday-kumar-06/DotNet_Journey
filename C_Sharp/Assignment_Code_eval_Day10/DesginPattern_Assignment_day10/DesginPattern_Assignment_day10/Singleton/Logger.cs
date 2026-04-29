@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DesginPattern_Assignment_day10
+namespace DesginPattern_Assignment_day10.Singleton
 {
     sealed class Logger
     {

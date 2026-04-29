@@ -4,7 +4,8 @@ using System.Text;
 
 namespace DesginPattern_Assignment_day10.ObserverPattern
 {
-    internal class WeatherDisplay
+    public interface IObserver
     {
+        void Update(float temperature);
     }
 }
