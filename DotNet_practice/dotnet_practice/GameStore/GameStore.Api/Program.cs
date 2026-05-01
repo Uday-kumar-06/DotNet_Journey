@@ -35,4 +35,7 @@ app.MapPost("/games", (CreateGameDto newGame) =>
     return Results.CreatedAtRoute(GetGameEndpointName, new {id = gameDto.Id}, gameDto);
 });
 
+
+app.MapPut("/games/{id}", ())
+
 app.Run();
