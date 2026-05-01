@@ -25,5 +25,10 @@ namespace DesginPatterns_Demo_Application.Creational_Patterns.singleton_pattern
             }
             return logger;
         }
+
+        public void Log(string message)
+        {
+            Console.WriteLine($"[LOG]: {message}");
+        }
     }
 }
