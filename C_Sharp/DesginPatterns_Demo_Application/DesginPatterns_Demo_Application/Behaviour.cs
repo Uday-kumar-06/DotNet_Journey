@@ -8,7 +8,7 @@ using System;
 
 namespace DesginPatterns_Demo_Application
 {
-    internal class Behaviour
+    internal class Startup
     {
         public void Run()
         {

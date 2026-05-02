@@ -10,7 +10,7 @@ class Program
 {
     public static void Main(string[] args)
     {
-        Behaviour behaviour = new Behaviour();
-        behaviour.Run();
+        Startup startup = new Startup();
+        startup.Run();
     }
 }
