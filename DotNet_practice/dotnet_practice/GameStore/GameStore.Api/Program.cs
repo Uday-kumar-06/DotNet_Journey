@@ -1,11 +1,11 @@
 using GameStore.Api.Data;
+using GameStore.Api.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddValidation();
 //Dependency Injection
-var connString = "Data Source=GameStore.db";
-builder.Services.AddSqlite<GameStoreContext>(connString);
+builder.AddGameStoreDb();
 
 //Data migration commands:
 // --> dotnet ef migrations add InitialCreate
