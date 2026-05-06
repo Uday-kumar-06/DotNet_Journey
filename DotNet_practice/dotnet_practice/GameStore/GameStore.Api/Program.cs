@@ -1,4 +1,5 @@
 using GameStore.Api.Data;
+using GameStore.Api.Endpoints;
 using GameStore.Api.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,7 @@ builder.AddGameStoreDb();
 // --> dotnet ef database update
 var app = builder.Build();
 
+app. MapGenresEndpoints();
 app.MapGamesEndpoints();
 
 app.MigrateDb();

@@ -4,17 +4,17 @@ GET http://localhost:5251/games
 GET http://localhost:5251/student
 
 ####
-GET http://localhost:5251/games/5
+GET http://localhost:5251/games/1
 
 ####
 POST http://localhost:5251/games
 Content-Type: application/json
 
 {
-    "name":"SuperMario",
-    "genreId": 2,
+    "name":"SuperMario...",
+    "genreId": 3,
     "price": 59.99,
-    "releaseDate":"2023-10-20"
+    "releaseDate":"2022-10-20"
 }
 
 
@@ -24,11 +24,47 @@ Content-Type: application/json
 
 {
     "name":"SuperMario....",
-    "genre": "Platform-II",
-    "price": 59.99,
+    "genreId": 2,
+    "price": 26.99,
     "releaseDate":"2023-10-20"
 }
 
 
 ###
 DELETE http://localhost:5251/games/5
+
+
+# For Genre
+###
+GET http://localhost:5251/genre
+
+####
+
+GET http://localhost:5251/genre/5
+
+####
+
+POST http://localhost:5251/genre
+Content-Type: application/json
+
+{
+    "name":"Over-Action"
+}
+
+####
+
+POST http://localhost:5251/genre
+Content-Type: application/json
+
+{
+    "name":"Adventure"
+}
+
+####
+
+POST http://localhost:5251/genre
+Content-Type: application/json
+
+{
+    "name":"Racing"
+}
