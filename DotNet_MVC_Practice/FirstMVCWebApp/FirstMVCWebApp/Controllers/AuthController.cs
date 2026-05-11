@@ -17,6 +17,7 @@ namespace FirstMVCWebApp.Controllers
 
         public IActionResult Login()
         {
+            ViewBag.SuccessMessage = TempData["successMessage"];
             return View();
         }
 
@@ -27,6 +28,11 @@ namespace FirstMVCWebApp.Controllers
 
         public async Task<IActionResult> CreateUser(UserRequestDto dto)
         {
+            if(!ModelState.IsValid)
+            {
+                ViewBag.ErrorMessage = "Please fill in all required fields.";
+                return View("Register");
+            }
             var existingUser = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
             if (existingUser == null){ 
                 var user = new User
@@ -38,11 +44,37 @@ namespace FirstMVCWebApp.Controllers
                 dbContext.Users.Add(user);
                 await dbContext.SaveChangesAsync();
             }
-            //else
-            //{
-
-            //}
+            else
+            {
+                ViewBag.ErrorMessage = "Email already exists. Please use a different email.";
+                return View("Register");
+            }
+            TempData["successMessage"] = "User created successfully. Please log in.";
             return RedirectToAction("Login");
+        }
+
+        public async Task<IActionResult> LoginUser(UserLoginResponseDto user)
+        {
+            var isUserExists = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
+
+            if (isUserExists == null) { 
+                ViewBag.ErrorMessage = "Invalid email, User with Email Doesnot Exsist..";
+                return View("Login");
+            }
+            else
+            {
+                if(isUserExists.Password == user.Password)
+                {
+                    TempData["successMessage"] = "Login successful. Welcome back!";
+                    return RedirectToAction("Index", "Dashboard");
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Invalid password. Please try again.";
+                    return View("Login");
+                }
+            }
+
         }
     }
 }
