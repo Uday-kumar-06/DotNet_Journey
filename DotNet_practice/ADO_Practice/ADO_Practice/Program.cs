@@ -19,8 +19,8 @@ class Program
 
             SqlCommand cmd = new SqlCommand(query, con);
 
-            cmd.Parameters.AddWithValue("@name", "Uday");
-            cmd.Parameters.AddWithValue("@age", 22);
+            cmd.Parameters.AddWithValue("@name", "Bhargav");
+            cmd.Parameters.AddWithValue("@age", 23);
 
             int rows = cmd.ExecuteNonQuery();
 
