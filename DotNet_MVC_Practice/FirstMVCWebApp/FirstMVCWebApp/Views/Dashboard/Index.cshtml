@@ -1,1 +1,62 @@
-﻿Hi Dashboard .......
+﻿@using FirstMVCWebApp.Dto
+@model List<ProductResponseDto>
+
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Product Dashboard</h2>
+
+        <a asp-action="AddProduct"
+               asp-controller="Dashboard"
+               class="btn btn-primary">
+            Add Product
+        </a>
+    </div>
+
+    <table class="table table-bordered table-hover shadow">
+        
+        <thead class="table-dark">
+            <tr>
+                <th>Product Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Color</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @if(Model.Count > 0){
+                foreach(var product in Model)
+                {
+                    <tr>
+                        <td>@product.ProductName</td>
+                        <td>@product.Description</td>
+                        <td>$@product.Price</td>
+                        <td>@product.Color</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm">
+                                Edit
+                            </button>
+
+                            <button class="btn btn-danger btn-sm">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+               <tr>
+                    <td colspan="5" class="text-center">No products available.</td>
+               </tr>
+            }
+
+
+        </tbody>
+
+    </table>
+
+</div>
