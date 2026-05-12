@@ -55,6 +55,11 @@ namespace FirstMVCWebApp.Controllers
 
         public async Task<IActionResult> LoginUser(UserLoginResponseDto user)
         {
+            if(!ModelState.IsValid)
+            {
+                ViewBag.ErrorMessage = "Please fill in all required fields.";
+                return View("Login");
+            }
             var isUserExists = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
 
             if (isUserExists == null) { 
