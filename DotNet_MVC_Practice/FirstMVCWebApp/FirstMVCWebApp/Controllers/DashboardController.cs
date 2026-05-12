@@ -2,6 +2,7 @@
 using FirstMVCWebApp.Dto;
 using FirstMVCWebApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FirstMVCWebApp.Controllers
 {
@@ -44,6 +45,18 @@ namespace FirstMVCWebApp.Controllers
             await dbContext.Products.AddAsync(product);
             await dbContext.SaveChangesAsync();
             return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> DeleteProduct(int productid)
+        {
+            var product = await dbContext.Products.FirstOrDefaultAsync(x => x.Id == productid);
+            if (product != null)
+            {
+                dbContext.Products.Remove(product);
+                await dbContext.SaveChangesAsync();
+            }
+            return RedirectToAction("Index");
+
         }
     }
 }
