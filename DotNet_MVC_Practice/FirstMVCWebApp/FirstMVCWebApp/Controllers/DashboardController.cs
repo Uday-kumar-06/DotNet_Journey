@@ -1,11 +1,13 @@
 ﻿using FirstMVCWebApp.Data;
 using FirstMVCWebApp.Dto;
 using FirstMVCWebApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace FirstMVCWebApp.Controllers
 {
+    [Authorize]
     public class DashboardController(AppDbContext dbContext) : Controller
     {
         public IActionResult Index()
@@ -56,7 +58,6 @@ namespace FirstMVCWebApp.Controllers
                 await dbContext.SaveChangesAsync();
             }
             return RedirectToAction("Index");
-
         }
     }
 }
