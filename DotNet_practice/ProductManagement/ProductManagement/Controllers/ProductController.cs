@@ -4,7 +4,7 @@ using ProductManagement.Repositories;
 
 namespace ProductManagement.Controllers
 {
-    public class ProductController(IProductRepository repository) : Controller
+    public class ProductController(IProductRepository repository) : Controlle
     {
 
         public IActionResult Index()
