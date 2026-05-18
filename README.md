@@ -252,18 +252,3 @@ This repository documents my complete learning journey through the **Microsoft .
 | Logging & Monitoring | Application Insights, Serilog sinks, OpenTelemetry |
 
 ---
-
-## 🏗️ Projects Built
-
-| # | Project | Tech Used | Description |
-|---|---------|-----------|-------------|
-| 1 | **Student Management System** | C#, Console | CRUD with OOP, file I/O |
-| 2 | **Library API** | ASP.NET Core, EF Core, SQLite | Full REST API with Swagger |
-| 3 | **Auth System** | ASP.NET Identity, JWT | Login, Register, Role-based access |
-| 4 | **Task Manager App** | Clean Architecture, CQRS, MediatR | Full MVC app with Repository pattern |
-| 5 | **Real-time Chat** | SignalR, Razor Pages | WebSocket-based chat rooms |
-| 6 | **Ecommerce API** | Minimal APIs, EF Core, Redis | Product catalog, cart, orders |
-| 7 | **Background Job Processor** | Hangfire, Worker Service, RabbitMQ | Async email/notification processing |
-| 8 | **Dockerized Microservice** | Docker, GitHub Actions, Azure | Containerized + deployed API |
-
----
