@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "AJAX Demo";
+}
+
+<h2>Simple AJAX Example</h2>
+
+<input type="text" id="txtName" placeholder="Enter name" />
+
+<button id="btnSend">
+    Send
+</button>
+
+<h3 id="result"></h3>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+
+    $("#btnSend").click(function () {
+
+    var username = $("#txtName").val();
+
+    $.ajax({
+
+    url: '/Home/GetMessage',
+
+    type: 'POST',
+
+    data: { name: username },
+
+    success: function (response) {
+
+    $("#result").text(response.message);
+
+    }
+
+    });
+
+    });
+
+</script>
