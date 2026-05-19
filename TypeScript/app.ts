@@ -219,11 +219,13 @@ interface Todo{
     description:string;
 }
 
+//Todo
+
 const updateTodo = (todo: Partial<Todo>) =>{
     todo.description = "hetear";
 };
 
-
+//Record
 interface PageInfo{
     title:string;
 }
