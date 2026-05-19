@@ -214,13 +214,12 @@ function add1(value: stringOrNumber): number{
 }
 
 //Utility Types
+
+//Todo
 interface Todo{
     title:string;
     description:string;
 }
-
-//Todo
-
 const updateTodo = (todo: Partial<Todo>) =>{
     todo.description = "hetear";
 };
