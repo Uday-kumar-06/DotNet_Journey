@@ -1,0 +1,59 @@
+﻿@model MvcModelBindingDemo.Models.User
+
+@{
+    ViewData["Title"] = "User Registration";
+}
+
+<h2>User Registration Form</h2>
+
+<form asp-action="Register" method="post">
+
+    <h3>User Information</h3>
+
+    <div>
+        <label>First Name</label>
+        <input asp-for="FirstName" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Last Name</label>
+        <input asp-for="LastName" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Age</label>
+        <input asp-for="Age" />
+    </div>
+
+    <br />
+
+    <h3>Address Information</h3>
+
+    <div>
+        <label>Street</label>
+        <input asp-for="Address.Street" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>City</label>
+        <input asp-for="Address.City" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Zip Code</label>
+        <input asp-for="Address.ZipCode" />
+    </div>
+
+    <br />
+
+    <button type="submit">Submit</button>
+
+</form>
