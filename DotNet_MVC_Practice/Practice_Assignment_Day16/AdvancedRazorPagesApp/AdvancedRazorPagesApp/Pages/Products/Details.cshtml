@@ -1,0 +1,24 @@
+﻿@page "{id:int}"
+@model AdvancedRazorPagesApp.Pages.Products.DetailsModel
+
+<h1>Product Details</h1>
+
+<h2>@Model.Product.Name</h2>
+
+<p>@Model.Product.Description</p>
+
+<h3>Categories</h3>
+
+<ul>
+    @foreach (var category in Model.Product.Categories)
+    {
+        if (!string.IsNullOrEmpty(category.Name))
+        {
+            <li>@category.Name</li>
+        }
+    }
+</ul>
+
+<a asp-page="/Products/Index">
+    Back to Products
+</a>
