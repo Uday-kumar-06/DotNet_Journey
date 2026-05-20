@@ -1,0 +1,25 @@
+﻿<h1>Products Page</h1>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <h3>Welcome @User.Identity.Name</h3>
+
+    <p>You are successfully logged in.</p>
+
+    @if (User.IsInRole("Admin"))
+    {
+        <p>Your Role: Admin</p>
+    }
+    else if (User.IsInRole("Seller"))
+    {
+        <p>Your Role: Seller</p>
+    }
+    else if (User.IsInRole("Customer"))
+    {
+        <p>Your Role: Customer</p>
+    }
+}
+else
+{
+    <p>You are not logged in.</p>
+}
