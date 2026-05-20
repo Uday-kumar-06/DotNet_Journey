@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using Student_Registration_Search_System_AJAX.Data;
+using Student_Registration_Search_System_AJAX.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,7 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IRepository, RepositoryPattern>();
 
 var app = builder.Build();
 
@@ -27,7 +31,7 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=Student}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 
