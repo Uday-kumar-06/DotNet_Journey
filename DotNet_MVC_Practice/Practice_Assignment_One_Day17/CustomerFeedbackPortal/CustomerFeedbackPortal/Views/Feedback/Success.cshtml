@@ -1,0 +1,10 @@
+﻿@model CustomerFeedbackPortal.Models.Feedback
+
+<h2>Feedback Submitted Successfully!</h2>
+
+<p>Thank you, @Model.Name</p>
+
+<a asp-controller="Feedback"
+       asp-action="Index">
+    Submit Another Feedback
+</a>
