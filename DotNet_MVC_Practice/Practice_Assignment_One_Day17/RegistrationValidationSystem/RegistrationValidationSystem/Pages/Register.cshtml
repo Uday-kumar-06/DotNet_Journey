@@ -1,4 +1,58 @@
 ﻿@page
 @model RegistrationValidationSystem.Pages.RegisterModel
-@{
+
+<h2>User Registration Form</h2>
+
+<form method="post">
+
+    <!-- Validation Summary -->
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div>
+        <label asp-for="Registration.Username"></label>
+        <input asp-for="Registration.Username" class="form-control" />
+        <span asp-validation-for="Registration.Username" class="text-danger"></span>
+    </div>
+
+    <br />
+
+    <div>
+        <label asp-for="Registration.Email"></label>
+        <input asp-for="Registration.Email" class="form-control" />
+        <span asp-validation-for="Registration.Email" class="text-danger"></span>
+    </div>
+
+    <br />
+
+    <div>
+        <label asp-for="Registration.Password"></label>
+        <input asp-for="Registration.Password" class="form-control" />
+        <span asp-validation-for="Registration.Password" class="text-danger"></span>
+    </div>
+
+    <br />
+
+    <div>
+        <label asp-for="Registration.ConfirmPassword"></label>
+        <input asp-for="Registration.ConfirmPassword" class="form-control" />
+        <span asp-validation-for="Registration.ConfirmPassword" class="text-danger"></span>
+    </div>
+
+    <br />
+
+    <button type="submit" class="btn btn-primary">
+        Register
+    </button>
+
+</form>
+
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <h3 style="color:green">
+        @Model.SuccessMessage
+    </h3>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }
