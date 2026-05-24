@@ -1,0 +1,28 @@
+﻿@model List<ECommerceRoutingApp.Models.Product>
+
+<h2>Filtered Products</h2>
+
+<p>
+    Category: @ViewBag.Category
+</p>
+
+<p>
+    Price Range: @ViewBag.PriceRange
+</p>
+
+<table border="1" cellpadding="10">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Price</th>
+    </tr>
+
+    @foreach (var product in Model)
+    {
+        <tr>
+            <td>@product.Id</td>
+            <td>@product.Name</td>
+            <td>₹@product.Price</td>
+        </tr>
+    }
+</table>

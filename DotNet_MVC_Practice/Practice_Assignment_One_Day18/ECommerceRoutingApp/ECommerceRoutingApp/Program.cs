@@ -1,29 +1,47 @@
+using ECommerceRoutingApp.Constraints;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.Configure<RouteOptions>(options =>
+{
+    options.ConstraintMap.Add("validCategory", typeof(CategoryConstraint));
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+
 app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapStaticAssets();
+
+app.MapControllerRoute(
+    name: "productdetails",
+    pattern: "Products/{category:validCategory}/{id:int}",
+    defaults: new { controller = "Products", action = "Details" });
+
+app.MapControllerRoute(
+    name: "productfilter",
+    pattern: "Products/Filter/{category:validCategory}/{priceRange}",
+    defaults: new { controller = "Products", action = "Filter" });
+
+app.MapControllerRoute(
+    name: "checkout",
+    pattern: "Checkout",
+    defaults: new { controller = "Cart", action = "Checkout" });
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
-
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
