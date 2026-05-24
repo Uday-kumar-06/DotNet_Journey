@@ -1,9 +1,9 @@
 using AdvancedRoutingMVC.Constraints;
+using Microsoft.AspNetCore.Routing;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
-
 
 builder.Services.Configure<RouteOptions>(options =>
 {
@@ -39,3 +39,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+public partial class Program
+{
+}
