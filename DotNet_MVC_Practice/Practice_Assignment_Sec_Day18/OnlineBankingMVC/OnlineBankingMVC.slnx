@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="OnlineBankingMVC/OnlineBankingMVC.csproj" />
+  <Project Path="OnlineBankingMVCTest/OnlineBankingMVCTest.csproj" />
 </Solution>

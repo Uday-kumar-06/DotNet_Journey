@@ -1,6 +1,7 @@
 ﻿namespace OnlineBankingMVC.Services
 {
-    public class IloggingService
+    public interface ILoggingService
     {
+        void Log(string message);
     }
 }

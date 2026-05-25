@@ -1,6 +1,15 @@
-﻿namespace OnlineBankingMVC.Controllers
+﻿using Microsoft.AspNetCore.Mvc;
+using OnlineBankingMVC.Filters;
+
+namespace OnlineBankingMVC.Controllers
 {
-    public class AdminController
+    [CustomAuthenticationFilter]
+    [RoleAuthorizationFilter("Admin")]
+    public class AdminController : Controller
     {
+        public IActionResult AllAccounts()
+        {
+            return View();
+        }
     }
 }
