@@ -1,5 +1,39 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model IEnumerable<BookStoreADO.Models.Book>
+
+<h2>Books List</h2>
+
+<a asp-action="Create">Add Book</a>
+
+<table class="table">
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Actions</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Title</td>
+            <td>@item.Author</td>
+            <td>@item.Price</td>
+            <td>@item.Quantity</td>
+
+            <td>
+                <a asp-action="Edit"
+                       asp-route-id="@item.Id">
+                    Edit
+                </a>
+
+                |
+
+                <a asp-action="Delete"
+                       asp-route-id="@item.Id">
+                    Delete
+                </a>
+            </td>
+        </tr>
+    }
+</table>
