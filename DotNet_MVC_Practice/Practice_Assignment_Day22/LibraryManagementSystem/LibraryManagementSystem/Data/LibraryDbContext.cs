@@ -19,6 +19,10 @@ namespace LibraryManagementSystem.Data
                 .HasOne(b => b.Author)
                 .WithMany(a => a.Books)
                 .HasForeignKey(b => b.AuthorID);
+            modelBuilder.Entity<Book>()
+                .HasMany(b => b.Genres)
+                .WithMany(g => g.Books)
+                .UsingEntity(j => j.ToTable("BookGenres"));
         }
     }
 }
