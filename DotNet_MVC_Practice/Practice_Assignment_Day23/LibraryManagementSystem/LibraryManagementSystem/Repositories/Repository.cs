@@ -25,8 +25,16 @@ public class Repository<T> : IRepository<T>
 
     public async Task AddAsync(T entity)
     {
-        await _dbSet.AddAsync(entity);
-        await _context.SaveChangesAsync();
+        try
+        {
+            await _dbSet.AddAsync(entity);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(
+                $"Database Error: {ex.Message}");
+        }
     }
 
     public async Task UpdateAsync(T entity)
@@ -45,4 +53,6 @@ public class Repository<T> : IRepository<T>
             await _context.SaveChangesAsync();
         }
     }
+
+    
 }
