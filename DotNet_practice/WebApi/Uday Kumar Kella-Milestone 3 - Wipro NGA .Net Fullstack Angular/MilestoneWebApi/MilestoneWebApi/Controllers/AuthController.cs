@@ -59,7 +59,6 @@ namespace MilestoneWebApi.Controllers
             var user = await _context.Users
                 .FirstOrDefaultAsync(x =>
                 x.Username == dto.Username);
-
             if (user == null ||
                 !BCrypt.Net.BCrypt.Verify(
                     dto.Password,
@@ -67,7 +66,6 @@ namespace MilestoneWebApi.Controllers
             {
                 return Unauthorized();
             }
-
             var claims = new[]
             {
                 new Claim(

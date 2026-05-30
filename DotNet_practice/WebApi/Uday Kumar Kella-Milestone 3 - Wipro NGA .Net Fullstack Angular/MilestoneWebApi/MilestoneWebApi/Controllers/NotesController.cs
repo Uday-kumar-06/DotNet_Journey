@@ -8,6 +8,7 @@ using System.Security.Claims;
 
 namespace MilestoneWebApi.Controllers
 {
+    //This is Notes Contoller where i had added all my endpoints logic
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
@@ -27,6 +28,8 @@ namespace MilestoneWebApi.Controllers
                 ClaimTypes.NameIdentifier)!);
         }
 
+        //Endpoints
+        //This is the end point for adding note
         [HttpPost]
         public async Task<IActionResult> AddNote(NoteDto dto)
         {
@@ -48,7 +51,7 @@ namespace MilestoneWebApi.Controllers
                 noteId = note.Id
             });
         }
-
+        //Here i used this endpoint logic for getting all the notes of the user
         [HttpGet]
         public async Task<IActionResult> GetNotes()
         {
@@ -58,7 +61,7 @@ namespace MilestoneWebApi.Controllers
 
             return Ok(notes);
         }
-
+        //we can use this for get the note by id we have 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateNote(
             int id,
@@ -82,6 +85,8 @@ namespace MilestoneWebApi.Controllers
                 message = "Updated"
             });
         }
+
+        //i use this end point for delete the note by id
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteNote(int id)
