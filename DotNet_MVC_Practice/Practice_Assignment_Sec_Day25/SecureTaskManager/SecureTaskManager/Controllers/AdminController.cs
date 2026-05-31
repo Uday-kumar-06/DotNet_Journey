@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SecureTaskManager.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
-        public IActionResult Index()
+        public IActionResult ManageTasks()
         {
             return View();
         }
