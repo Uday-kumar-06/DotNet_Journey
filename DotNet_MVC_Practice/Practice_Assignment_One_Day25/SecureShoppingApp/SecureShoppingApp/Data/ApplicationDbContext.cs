@@ -1,6 +1,16 @@
-﻿namespace SecureShoppingApp.Data
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+
+namespace SecureShoppingApp.Data
 {
     public class ApplicationDbContext
+        : IdentityDbContext<IdentityUser>
     {
+        public ApplicationDbContext(
+            DbContextOptions<ApplicationDbContext> options)
+            : base(options)
+        {
+        }
     }
 }
