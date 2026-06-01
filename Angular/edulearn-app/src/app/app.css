@@ -1,0 +1,28 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  color: #1976d2;
+  margin-bottom: 20px;
+}
+
+hr {
+  margin: 20px 0;
+}
+
+.container {
+  display: flex;
+  gap: 20px;
+}
+
+.left,
+.right {
+  flex: 1;
+}
+
+h1 {
+  text-align: center;
+  color: #1976d2;
+}
