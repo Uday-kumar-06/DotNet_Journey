@@ -1,10 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FinanceBilling.Core.Models
+namespace FinanceBilling.Core.Models;
+
+public class User
 {
-    internal class User
-    {
-    }
+    [Key]
+    public int UserId { get; set; }
+
+    [Required]
+    [StringLength(100)]
+    public string Username { get; set; } = string.Empty;
+
+    [Required]
+    public string PasswordHash { get; set; } = string.Empty;
+
+    [ForeignKey(nameof(Role))]
+    public int RoleId { get; set; }
+
+    public Role? Role { get; set; }
 }
