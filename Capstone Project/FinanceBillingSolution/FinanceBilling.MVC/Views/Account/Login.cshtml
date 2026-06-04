@@ -1,0 +1,94 @@
+﻿@model FinanceBilling.MVC.ViewModels.Account.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container auth-container">
+
+    <div class="row justify-content-center align-items-center vh-100">
+
+        <div class="col-md-5">
+
+            <div class="card auth-card shadow">
+
+                <div class="card-body p-5">
+
+                    <div class="text-center mb-4">
+
+                        <h2 class="brand-title">
+                            Finance Billing
+                        </h2>
+
+                        <p class="text-muted">
+                            Sign in to continue
+                        </p>
+
+                    </div>
+
+                    <form method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="All"
+                             class="text-danger mb-3">
+                        </div>
+
+                        @if (TempData["Success"] != null)
+                        {
+                            <div class="alert alert-success">
+                                @TempData["Success"]
+                            </div>
+                        }
+
+                        <div class="mb-3">
+
+                            <label asp-for="Username"
+                                   class="form-label">
+                            </label>
+
+                            <input asp-for="Username"
+                                   class="form-control" />
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label asp-for="Password"
+                                   class="form-label">
+                            </label>
+
+                            <input asp-for="Password"
+                                   class="form-control" />
+
+                        </div>
+
+                        <button type="submit"
+                                class="btn btn-finance w-100">
+
+                            Login
+
+                        </button>
+
+                        <div class="text-center mt-3">
+
+                            <a asp-action="Register"
+                                   class="text-decoration-none">
+
+                                Create Account
+
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

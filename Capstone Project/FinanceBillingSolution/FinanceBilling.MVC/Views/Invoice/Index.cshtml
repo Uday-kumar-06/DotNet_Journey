@@ -1,0 +1,194 @@
+﻿@model IEnumerable<FinanceBilling.MVC.ViewModels.Invoice.InvoiceViewModel>
+
+@{
+    ViewData["Title"] = "Invoices";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <h2>Invoices</h2>
+
+    @if (User.IsInRole("Manager"))
+    {
+        <button class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#invoiceModal">
+            <i class="bi bi-plus-circle"></i>
+            New Invoice
+        </button>
+    }
+
+
+</div>
+
+<div class="card">
+
+
+    <div class="card-body">
+
+        <table id="invoiceTable"
+               class="table table-bordered table-hover">
+
+            <thead>
+                <tr>
+                    <th>Invoice #</th>
+                    <th>Client</th>
+                    <th>Amount</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var invoice in Model)
+                {
+                    <tr>
+
+                        <td>@invoice.InvoiceId</td>
+
+                        <td>@invoice.ClientName</td>
+
+                        <td>
+                            ₹@invoice.TotalAmount.ToString("N2")
+                        </td>
+
+                        <td>
+                            @invoice.DueDate.ToShortDateString()
+                        </td>
+
+                        <td>
+
+                            @if (invoice.Status == "Paid")
+                            {
+                                <span class="badge bg-success">
+                                    Paid
+                                </span>
+                            }
+                            else if (invoice.Status == "Overdue")
+                            {
+                                <span class="badge bg-danger">
+                                    Overdue
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning text-dark">
+                                    Pending
+                                </span>
+                            }
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+</div>
+
+@if (User.IsInRole("Manager"))
+{
+    <div class="modal fade"
+         id="invoiceModal"
+         tabindex="-1"
+         aria-hidden="true">
+
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title">
+                        Create Invoice
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    @Html.AntiForgeryToken()
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Client
+                        </label>
+
+                        <select id="clientUserId"
+                                class="form-select">
+
+                            <option value="">
+                                Select Client
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Amount
+                        </label>
+
+                        <input id="totalAmount"
+                               type="number"
+                               step="0.01"
+                               class="form-control" />
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Due Date
+                        </label>
+
+                        <input id="dueDate"
+                               type="date"
+                               class="form-control" />
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-primary"
+                            id="btnSaveInvoice">
+                        Save Invoice
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+}
+
+@section Scripts
+{
+    <script src="~/js/invoice.js"></script>
+}

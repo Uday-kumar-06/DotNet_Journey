@@ -1,0 +1,234 @@
+﻿@model FinanceBilling.MVC.ViewModels.Dashboard.DashboardSummaryViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<script>
+    setInterval(function ()
+    {
+        location.reload();
+    }, 30000);
+</script>
+
+<div class="row g-4">
+
+    <div class="col-md-3">
+
+        <div class="card kpi-card">
+
+            <div class="card-body">
+
+                <h6 class="text-muted">
+                    Total Billed
+                </h6>
+
+                <h3>
+                    ₹@Model.TotalBilled.ToString("N2")
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <h6 class="text-muted">
+                    Total Collected
+                </h6>
+
+                <h3 class="text-success">
+
+                    ₹@Model.TotalCollected.ToString("N2")
+
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <h6 class="text-muted">
+                    Outstanding
+                </h6>
+
+                <h3 class="text-danger">
+
+                    ₹@Model.OutstandingAmount.ToString("N2")
+
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <h6 class="text-muted">
+                    Total Invoices
+                </h6>
+
+                <h3>
+
+                    @Model.TotalInvoices
+
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row g-4 mt-2">
+
+    <div class="col-md-4">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <h6 class="text-muted">
+                    Paid Invoices
+                </h6>
+
+                <h3 class="text-success">
+                    @Model.PaidInvoices
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <h6 class="text-muted">
+                    Pending Invoices
+                </h6>
+
+                <h3 class="text-warning">
+                    @Model.PendingInvoices
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <h6 class="text-muted">
+                    Overdue Invoices
+                </h6>
+
+                <h3 class="text-danger">
+                    @Model.OverdueInvoices
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card mt-4">
+
+    <div class="card-body">
+
+        <h5>
+            Recent Activity
+        </h5>
+
+        <hr />
+
+        @if (Model.RecentActivities != null &&
+             Model.RecentActivities.Any())
+        {
+            @foreach (var activity
+                in Model.RecentActivities)
+            {
+                <div class="mb-3">
+
+                    <strong>
+                        @activity.Username
+                    </strong>
+
+                    <span>
+                        @activity.Action
+                    </span>
+
+                    <div class="text-muted">
+
+                        @activity.ChangedAt
+                        .ToString(
+                        "dd-MMM-yyyy HH:mm")
+
+                    </div>
+
+                </div>
+            }
+        }
+        else
+        {
+            <p class="text-muted">
+                No recent activity found.
+            </p>
+        }
+
+    </div>
+
+</div>
+
+<hr />
+
+<div class="card mt-4">
+
+    <div class="card-body">
+
+        <h4>
+            Finance Overview
+        </h4>
+
+        <p class="text-muted">
+
+            Analytics charts will appear here.
+
+        </p>
+
+    </div>
+
+</div>
