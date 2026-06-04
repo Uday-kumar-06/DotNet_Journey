@@ -1,6 +1,6 @@
 # FinanceBilling Solution - Comprehensive Project Documentation
 
-**Version:** 1.0  
+**Version:** 2.0  
 **Last Updated:** June 2026  
 **Technology Stack:** .NET 8, ASP.NET Core, Entity Framework Core, SQL Server, JWT Authentication
 
@@ -13,7 +13,7 @@
 3. Architecture
 4. Technology Stack
 5. Project Structure
-6. Core Components
+6. Core Components & Implementation
 7. API Endpoints
 8. Database Schema
 9. Authentication & Security
@@ -28,18 +28,18 @@
 
 ## 1. EXECUTIVE SUMMARY
 
-**FinanceBillingSolution** is a comprehensive, enterprise-grade financial billing and invoice management system built with .NET 8 and ASP.NET Core. The application enables organizations to create, manage, and track invoices, process payments, and maintain detailed audit logs of all financial transactions.
+**FinanceBillingSolution** is an enterprise-grade financial billing and invoice management system built with .NET 8 and ASP.NET Core. The application enables organizations to create, manage, and track invoices, process payments, and maintain audit logs with JWT-based authentication and role-based authorization.
 
 ### Key Features
-- JWT-based authentication and role-based authorization
-- Comprehensive dashboard with financial summaries
-- Invoice creation, tracking, and status management
-- Payment processing with multiple payment methods
-- User management with approval workflows
-- Detailed audit logging for compliance
-- Real-time financial analytics and reporting
-- Enterprise-grade security and error handling
-- Comprehensive unit testing with xUnit
+- **JWT-based Authentication** with role-based authorization (Admin, Manager, Client)
+- **User Management** with approval workflows for new registrations
+- **Invoice Management** with status tracking (Pending, PartiallyPaid, Paid, Overdue, Cancelled)
+- **Payment Processing** with automatic invoice status updates
+- **Comprehensive Audit Logging** for compliance and accountability
+- **Clean Architecture** with Repository Pattern implementation
+- **Entity Framework Core** with database migrations
+- **Unit Testing** with xUnit framework
+- **Secure Password Hashing** using BCrypt
 
 ---
 
@@ -47,25 +47,23 @@
 
 ### Purpose
 The FinanceBillingSolution addresses the critical need for organizations to efficiently manage their billing operations through a centralized platform that provides:
-- Streamlined invoice creation and delivery
-- Real-time payment tracking
-- Financial dashboard analytics
-- User role management with approval workflows
-- Complete audit trails for regulatory compliance
+- Streamlined invoice creation and delivery with manager-based workflows
+- Real-time payment tracking with automatic status updates
+- User role management with administrative approval workflows
+- Complete audit trails for regulatory compliance and transparency
+- Multi-layered security with JWT authentication and password hashing
 
 ### Target Users
-- Financial managers
-- Billing administrators
-- Executive management
-- Accounting teams
-- Client relationship managers
+- **Admin:** System administrators managing user approvals and system oversight
+- **Manager:** Financial managers creating and managing invoices
+- **Client:** End users viewing their invoices and payment history
 
 ### Business Value
 - **Efficiency:** Automate invoice generation and payment tracking
-- **Compliance:** Maintain detailed audit logs for regulatory requirements
-- **Visibility:** Real-time dashboard for financial insights
-- **Security:** Role-based access control with JWT authentication
-- **Scalability:** Cloud-ready microservices architecture
+- **Compliance:** Maintain detailed audit logs for all system activities
+- **Security:** Role-based access control with JWT authentication and BCrypt password hashing
+- **Scalability:** Clean Architecture enables easy feature additions and maintenance
+- **Transparency:** Real-time audit logs and financial tracking
 
 ---
 
@@ -73,25 +71,26 @@ The FinanceBillingSolution addresses the critical need for organizations to effi
 
 ### Architectural Pattern: Clean Architecture with Repository Pattern
 
-The solution follows **Clean Architecture** principles, ensuring:
-- Separation of Concerns: Each layer has distinct responsibilities
-- Testability: Easy to mock dependencies for unit testing
-- Maintainability: Clear structure facilitates long-term maintenance
-- Flexibility: Easy to swap implementations without affecting business logic
-
-### Layered Architecture Diagram
+The solution follows **Clean Architecture** principles with clear layer separation:
 
 ```
-Presentation Layer (API/MVC)
+Presentation Layer (API Controllers)
     ↓
-Core Business Logic Layer
+Business Logic Layer (Services)
     ↓
-Infrastructure Layer
+Infrastructure Layer (Repositories, DbContext)
     ↓
-Data Access Layer (EF Core)
+Data Access Layer (Entity Framework Core)
     ↓
 SQL Server Database
 ```
+
+### Design Patterns Used
+- **Repository Pattern:** Abstracts data access logic
+- **Dependency Injection:** Built-in .NET DI container
+- **Entity Configuration:** Fluent API for EF Core mappings
+- **Service Layer:** Centralizes business logic
+- **DTO Pattern:** Decouples API contracts from domain models
 
 ---
 
@@ -105,95 +104,106 @@ SQL Server Database
 
 ### Security & Authentication
 - **Authentication:** JWT (JSON Web Tokens)
-- **Password Hashing:** BCrypt
+- **Password Hashing:** BCrypt with salt
 - **Authorization:** Role-based Access Control (RBAC)
 
-### API Documentation
-- **Swagger/OpenAPI:** NSwag for interactive API documentation
-- **ReDoc:** For read-only API documentation
+### API & Documentation
+- **API:** ASP.NET Core REST API
+- **Documentation:** Swagger/OpenAPI
 
 ### Testing Framework
 - **Unit Testing:** xUnit
 - **Mocking:** Moq
-- **Test Coverage:** Auth, Invoice, Payment, User services
 
 ### Development Tools
 - **IDE:** Visual Studio / Rider
 - **Version Control:** Git
 - **Package Management:** NuGet
+- **Database:** SQL Server
 
 ---
 
 ## 5. PROJECT STRUCTURE
 
-### Directory Layout
-
 ```
 FinanceBillingSolution/
 ├── FinanceBilling.Core/
 │   ├── DTOs/
+│   │   ├── Auth/
+│   │   ├── Invoice/
+│   │   ├── Payment/
+│   │   └── User/
 │   ├── Entities/
+│   │   ├── User.cs
+│   │   ├── Invoice.cs
+│   │   ├── Payment.cs
+│   │   ├── Role.cs
+│   │   ├── AuditLog.cs
+│   │   └── UserApproval.cs
 │   ├── Enums/
+│   │   └── InvoiceStatus.cs
 │   ├── Interfaces/
+│   │   ├── Repositories/
+│   │   └── Services/
 │   └── FinanceBilling.Core.csproj
+│
 ├── FinanceBilling.Infrastructure/
 │   ├── Data/
+│   │   └── FinanceBillingDbContext.cs
+│   ├── Configurations/
+│   │   ├── UserConfiguration.cs
+│   │   ├── InvoiceConfiguration.cs
+│   │   ├── PaymentConfiguration.cs
+│   │   └── UserApprovalConfiguration.cs
 │   ├── Repositories/
+│   │   ├── UserRepository.cs
+│   │   ├── InvoiceRepository.cs
+│   │   ├── PaymentRepository.cs
+│   │   └── AuditLogRepository.cs
 │   ├── Services/
+│   │   ├── AuthService.cs
+│   │   ├── UserService.cs
+│   │   ├── InvoiceService.cs
+│   │   ├── PaymentService.cs
+│   │   └── AuditLogService.cs
 │   ├── Security/
+│   │   ├── PasswordService.cs
+│   │   └── JwtTokenService.cs
+│   ├── Migrations/
 │   ├── DependencyInjection.cs
 │   └── FinanceBilling.Infrastructure.csproj
+│
 ├── FinanceBilling.API/
 │   ├── Controllers/
+│   │   ├── AuthController.cs
+│   │   ├── UsersController.cs
+│   │   ├── InvoicesController.cs
+│   │   ├── PaymentsController.cs
+│   │   └── AuditLogsController.cs
 │   ├── Middleware/
 │   ├── Program.cs
 │   ├── appsettings.json
 │   └── FinanceBilling.API.csproj
-├── FinanceBilling.MVC/
+│
+├── FinanceBilling.MVC/ (Optional)
 │   ├── Controllers/
 │   ├── Views/
 │   ├── wwwroot/
 │   └── FinanceBilling.MVC.csproj
+│
 ├── Tests/
 │   ├── AuthServiceTests.cs
 │   ├── UserServiceTests.cs
 │   ├── InvoiceServiceTests.cs
 │   ├── PaymentServiceTests.cs
 │   └── FinanceBilling.Tests.csproj
+│
 └── FinanceBillingSolution.slnx
 ```
 
-### Layer Descriptions
-
-#### FinanceBilling.Core
-Contains business logic, entities, DTOs, and service interfaces.
-- **DTOs:** Data transfer objects for API communication
-- **Entities:** Domain models (User, Invoice, Payment, etc.)
-- **Interfaces:** Service and repository contracts
-- **Enums:** Invoice status and other enumerations
-
-#### FinanceBilling.Infrastructure
-Implements repositories, services, and database context.
-- **Repositories:** Data access implementations
-- **Services:** Business logic implementations
-- **Data:** Entity Framework Core context
-- **Security:** JWT and password services
-
-#### FinanceBilling.API
-REST API endpoints and configuration.
-- **Controllers:** API endpoint definitions
-- **Middleware:** Custom middleware for exception handling
-- **Program.cs:** Application configuration and startup
-
-#### FinanceBilling.MVC
-Web UI layer (Optional MVC interface).
-
-#### Tests
-Unit test suite with xUnit and Moq.
-
 ---
 
-## 6. CORE COMPONENTS
+## 6. CORE COMPONENTS & IMPLEMENTATION
 
 ### 6.1 Entities (Domain Models)
 
@@ -217,14 +227,12 @@ public class User
 }
 ```
 
-**Key Fields:**
-- UserId: Unique user identifier
-- Username: User login name
-- Email: User email address
-- PasswordHash: Hashed password (never stored in plain text)
-- RoleId: Reference to user role
-- IsApproved: Admin approval status
-- IsActive: Account activation status
+**Database Configuration (UserConfiguration.cs):**
+- **Username:** Max 100 chars, unique index, required
+- **Email:** Max 150 chars, unique index, required
+- **PasswordHash:** Max 500 chars, required
+- **RoleId:** Foreign key to Role table (Restrict delete)
+- **Indexes:** Unique constraints on Username and Email
 
 #### Invoice Entity
 ```csharp
@@ -244,13 +252,14 @@ public class Invoice
 }
 ```
 
-**Key Fields:**
-- InvoiceId: Unique invoice identifier
-- ClientUserId: Client reference
-- CreatedByManagerId: Manager who created the invoice
-- TotalAmount: Invoice total amount
-- Status: Current invoice status (Pending, PartiallyPaid, Paid, Overdue, Cancelled)
-- DueDate: Payment due date
+**Database Configuration (InvoiceConfiguration.cs):**
+- **TotalAmount:** Decimal(18, 2) precision
+- **ClientUserId:** Foreign key with Restrict delete behavior
+- **CreatedByManagerId:** Foreign key with Restrict delete behavior
+- **Relationships:** 
+  - One-to-Many with User (ClientInvoices)
+  - One-to-Many with User (ManagedInvoices)
+  - One-to-Many with Payment
 
 #### Payment Entity
 ```csharp
@@ -265,8 +274,10 @@ public class Payment
 }
 ```
 
-#### Role Entity
-Defines user roles: Admin, Manager, Client
+**Database Configuration (PaymentConfiguration.cs):**
+- **AmountPaid:** Decimal(18, 2) precision
+- **PaymentMethod:** Max 50 chars, required
+- **Relationships:** Many-to-One with Invoice
 
 #### AuditLog Entity
 ```csharp
@@ -275,75 +286,223 @@ public class AuditLog
     public int AuditLogId { get; set; }
     public int UserId { get; set; }
     public string Action { get; set; }
-    public string EntityType { get; set; }
+    public string EntityName { get; set; }
     public int? EntityId { get; set; }
-    public DateTime Timestamp { get; set; }
+    public string? Details { get; set; }
+    public DateTime ChangedAt { get; set; }
     public User User { get; set; }
+}
+```
+
+**Audit Tracking Examples:**
+- "User Approved" - When admin approves new user
+- "Invoice Created" - When manager creates invoice
+- "Payment Recorded" - When payment is added
+
+#### UserApproval Entity
+```csharp
+public class UserApproval
+{
+    public int ApprovalId { get; set; }
+    public int UserId { get; set; }
+    public int ApprovedByUserId { get; set; }
+    public int AssignedRoleId { get; set; }
+    public DateTime ApprovedAt { get; set; }
+    public string? Remarks { get; set; }
+    public User User { get; set; }
+    public User ApprovedByUser { get; set; }
+    public Role AssignedRole { get; set; }
 }
 ```
 
 ### 6.2 Enumerations
 
 #### InvoiceStatus Enum
-```
-Pending = 1          // Invoice created, awaiting payment
-PartiallyPaid = 2    // Partial payment received
-Paid = 3             // Full payment received
-Overdue = 4          // Past due date without full payment
-Cancelled = 5        // Invoice cancelled
+```csharp
+public enum InvoiceStatus
+{
+    Pending = 1,           // Invoice created, awaiting payment
+    PartiallyPaid = 2,     // Partial payment received
+    Paid = 3,              // Full payment received
+    Overdue = 4,           // Past due date without full payment
+    Cancelled = 5          // Invoice cancelled
+}
 ```
 
-### 6.3 Services
+### 6.3 Services Implementation
 
 #### AuthService
-Handles user authentication and registration.
-- **RegisterAsync:** Validates and registers new users
-- **LoginAsync:** Authenticates user and generates JWT token
+Handles user authentication and registration with password hashing and JWT token generation.
+
+**Methods:**
+```csharp
+public async Task RegisterAsync(RegisterRequestDto dto)
+{
+    // 1. Validate username doesn't exist
+    // 2. Validate email doesn't exist
+    // 3. Hash password using BCrypt
+    // 4. Create user with IsApproved = false
+    // 5. Save to database
+}
+
+public async Task<LoginResponseDto?> LoginAsync(LoginRequestDto dto)
+{
+    // 1. Find user by username
+    // 2. Check if approved
+    // 3. Verify password using BCrypt
+    // 4. Generate JWT token
+    // 5. Update LastLoginAt
+    // 6. Return token and user info
+}
+```
+
+**Implementation (FinanceBilling.Infrastructure/Services/AuthService.cs):**
+- Uses BCrypt for password verification
+- Checks user approval status before login
+- Generates JWT token with user ID, username, and role
+- Updates LastLoginAt timestamp
+- Throws exceptions for validation failures
 
 #### UserService
 Manages user accounts and approvals.
-- **ApproveUser:** Approves pending user registrations
-- **GetPendingUsers:** Retrieves users awaiting approval
-- **GetClients:** Fetches all client users
+
+```csharp
+public async Task<IEnumerable<UserDto>> GetPendingUsersAsync()
+{
+    // Returns users with IsApproved = false
+}
+
+public async Task ApproveUserAsync(int adminUserId, ApproveUserDto dto)
+{
+    // 1. Find user by UserId
+    // 2. Assign RoleId
+    // 3. Set IsApproved = true
+    // 4. Log audit entry
+    // 5. Save changes
+}
+
+public async Task<IEnumerable<ClientLookupDto>> GetClientsAsync()
+{
+    // Returns approved users with Client role
+}
+```
 
 #### InvoiceService
-Manages invoice lifecycle.
-- **CreateInvoice:** Creates new invoices with audit logging
-- **GetAll:** Retrieves all invoices
-- **GetClientInvoices:** Gets invoices for specific client
+Manages invoice creation and retrieval.
+
+```csharp
+public async Task CreateInvoiceAsync(int managerId, CreateInvoiceDto dto)
+{
+    // 1. Create invoice with Pending status
+    // 2. Set timestamps and manager ID
+    // 3. Save to database
+    // 4. Log audit entry with amount
+}
+
+public async Task<IEnumerable<InvoiceDto>> GetAllAsync()
+{
+    // Returns all invoices with client details
+}
+
+public async Task<IEnumerable<InvoiceDto>> GetClientInvoicesAsync(int clientId)
+{
+    // Returns invoices for specific client
+}
+```
 
 #### PaymentService
-Handles payment processing.
-- **AddPayment:** Records payment against invoice
-- **GetAll:** Retrieves all payments
-- **UpdateInvoiceStatus:** Updates invoice based on payment status
+Handles payment processing and invoice status updates.
 
-#### DashboardService
-Provides analytics and reporting.
-- **GetSummary:** Total invoices, revenue, pending payments
-- **RecentActivity:** Last 5 transactions
+```csharp
+public async Task AddPaymentAsync(int userId, CreatePaymentDto dto)
+{
+    // 1. Create payment record
+    // 2. Log audit entry
+    // 3. Calculate total paid for invoice
+    // 4. Update invoice status:
+    //    - Paid if total = invoice amount
+    //    - Overdue if past due date
+    //    - Pending otherwise
+    // 5. Save changes
+}
+
+public async Task<IEnumerable<PaymentDto>> GetInvoicePaymentsAsync(int invoiceId)
+{
+    // Returns all payments for specific invoice
+}
+
+public async Task<IEnumerable<PaymentDto>> GetAllAsync()
+{
+    // Returns all payments in system
+}
+```
+
+**Status Update Logic:**
+```csharp
+var totalPaid = payments.Sum(x => x.AmountPaid);
+
+if (totalPaid >= invoice.TotalAmount)
+{
+    invoice.Status = InvoiceStatus.Paid;
+}
+else if (invoice.DueDate < DateTime.UtcNow)
+{
+    invoice.Status = InvoiceStatus.Overdue;
+}
+else
+{
+    invoice.Status = InvoiceStatus.Pending;
+}
+```
 
 #### AuditLogService
-Manages audit trail.
-- **LogAction:** Records user actions for compliance
-- **GetLogs:** Retrieves audit logs
+Manages audit trail retrieval.
+
+```csharp
+public async Task<IEnumerable<AuditLogDto>> GetAllAsync()
+{
+    // Returns all audit logs ordered by timestamp descending
+    // Includes username from related User entity
+}
+```
 
 ### 6.4 Repositories
 
-All repositories implement the **Repository Pattern** for clean data access.
+All repositories implement the **Repository Pattern** for clean data access separation.
 
-#### IUserRepository
-- GetByIdAsync(id)
-- GetByUsernameAsync(username)
-- GetByEmailAsync(email)
-- AddAsync(user)
-- UpdateAsync(user)
-- GetAllAsync()
-- GetPendingAsync()
-- DeleteAsync(id)
+#### UserRepository
+```csharp
+public async Task<User?> GetByIdAsync(int userId)
+public async Task<User?> GetByUsernameAsync(string username)
+public async Task<User?> GetByEmailAsync(string email)
+public async Task<IEnumerable<User>> GetPendingUsersAsync()
+public async Task<IEnumerable<User>> GetApprovedClientsAsync()
+public async Task AddAsync(User user)
+public async Task UpdateAsync(User user)
+```
 
-#### IInvoiceRepository, IPaymentRepository, IAuditLogRepository
-Similar interfaces with domain-specific methods.
+#### InvoiceRepository
+```csharp
+public async Task<Invoice?> GetByIdAsync(int invoiceId)
+public async Task<IEnumerable<Invoice>> GetAllAsync()
+public async Task<IEnumerable<Invoice>> GetByClientIdAsync(int clientId)
+public async Task AddAsync(Invoice invoice)
+public async Task UpdateAsync(Invoice invoice)
+```
+
+#### PaymentRepository
+```csharp
+public async Task<Payment?> GetByIdAsync(int paymentId)
+public async Task<IEnumerable<Payment>> GetByInvoiceIdAsync(int invoiceId)
+public async Task<IEnumerable<Payment>> GetAllAsync()
+public async Task AddAsync(Payment payment)
+```
+
+#### AuditLogRepository
+```csharp
+public async Task AddAsync(AuditLog auditLog)
+public async Task<IEnumerable<AuditLog>> GetAllAsync()
+```
 
 ---
 
@@ -363,11 +522,14 @@ Request:
     "password": "SecurePassword@123"
 }
 
-Response (200):
-{
-    "success": true,
-    "message": "User registered successfully"
-}
+Response (200 OK):
+"Registration submitted. Awaiting approval."
+
+Implementation:
+- Validates username and email uniqueness
+- Hashes password with BCrypt
+- Creates user with IsApproved = false
+- User must await admin approval
 ```
 
 #### Login User
@@ -381,12 +543,21 @@ Request:
     "password": "SecurePassword@123"
 }
 
-Response (200):
+Response (200 OK):
 {
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
     "username": "john_doe",
     "role": "Manager"
 }
+
+Response (401 Unauthorized):
+When credentials invalid or user not approved
+
+Implementation:
+- Verifies password using BCrypt
+- Checks IsApproved status
+- Generates JWT token with user claims
+- Updates LastLoginAt timestamp
 ```
 
 ### 7.2 Users Endpoints
@@ -395,18 +566,53 @@ Response (200):
 ```
 GET /api/users/pending
 Authorization: Bearer {token}
+Role Required: Admin
+
+Response (200 OK):
+[
+    {
+        "userId": 5,
+        "username": "pending_user",
+        "email": "pending@example.com",
+        "isApproved": false
+    }
+]
 ```
 
 #### Approve User
 ```
-POST /api/users/{userId}/approve
+POST /api/users/approve
 Authorization: Bearer {token}
+Role Required: Admin
+
+Request:
+{
+    "userId": 5,
+    "roleId": 3
+}
+
+Implementation:
+- Sets user.RoleId = provided roleId
+- Sets user.IsApproved = true
+- Creates UserApproval record
+- Logs audit entry
 ```
 
 #### Get All Clients
 ```
 GET /api/users/clients
 Authorization: Bearer {token}
+
+Response (200 OK):
+[
+    {
+        "userId": 3,
+        "username": "client1",
+        "email": "client1@example.com"
+    }
+]
+
+Returns: Approved users with Client role
 ```
 
 ### 7.3 Invoices Endpoints
@@ -415,26 +621,48 @@ Authorization: Bearer {token}
 ```
 POST /api/invoices
 Authorization: Bearer {token}
+Role Required: Manager
 
 Request:
 {
     "clientUserId": 3,
-    "invoiceDate": "2026-06-04T10:00:00Z",
     "dueDate": "2026-07-04T10:00:00Z",
     "totalAmount": 5000.00
 }
+
+Implementation:
+- Sets CreatedByManagerId = current user ID
+- Sets InvoiceDate = DateTime.UtcNow
+- Sets Status = InvoiceStatus.Pending
+- Logs audit entry with amount
+- Returns created invoice
 ```
 
 #### Get All Invoices
 ```
 GET /api/invoices
 Authorization: Bearer {token}
+
+Response (200 OK):
+[
+    {
+        "invoiceId": 1,
+        "clientUserId": 3,
+        "clientName": "client1",
+        "totalAmount": 5000.00,
+        "status": "Pending",
+        "invoiceDate": "2026-06-04T10:00:00Z",
+        "dueDate": "2026-07-04T10:00:00Z"
+    }
+]
 ```
 
-#### Get Invoice by ID
+#### Get Invoice by Client
 ```
-GET /api/invoices/{invoiceId}
+GET /api/invoices/client/{clientId}
 Authorization: Bearer {token}
+
+Returns: Invoices for specific client
 ```
 
 ### 7.4 Payments Endpoints
@@ -450,53 +678,71 @@ Request:
     "amountPaid": 2500.00,
     "paymentMethod": "Credit Card"
 }
+
+Implementation:
+- Creates Payment record
+- Sets PaymentDate = DateTime.UtcNow
+- Calculates total paid vs invoice amount
+- Updates invoice status automatically:
+  * Paid if total = invoice.TotalAmount
+  * Overdue if past DueDate
+  * Pending otherwise
+- Logs audit entry
 ```
 
 #### Get All Payments
 ```
 GET /api/payments
 Authorization: Bearer {token}
+
+Response (200 OK):
+[
+    {
+        "paymentId": 1,
+        "invoiceId": 1,
+        "amountPaid": 2500.00,
+        "paymentDate": "2026-06-04T11:30:00Z"
+    }
+]
 ```
 
 #### Get Invoice Payments
 ```
 GET /api/payments/invoice/{invoiceId}
 Authorization: Bearer {token}
+
+Returns: All payments for specific invoice
 ```
 
-### 7.5 Dashboard Endpoints
+### 7.5 Audit Logs Endpoints
 
-#### Get Dashboard Summary
-```
-GET /api/dashboard/summary
-Authorization: Bearer {token}
-
-Response:
-{
-    "totalInvoices": 15,
-    "totalRevenue": 150000.00,
-    "pendingAmount": 25000.00,
-    "recentActivity": [...]
-}
-```
-
-### 7.6 Audit Logs Endpoints
-
-#### Get Audit Logs
+#### Get All Audit Logs
 ```
 GET /api/auditlogs
 Authorization: Bearer {token}
+Role Required: Admin
 
-Response:
+Response (200 OK):
 [
     {
         "auditLogId": 1,
+        "userId": 1,
+        "username": "admin",
+        "action": "User Approved",
+        "entityName": "User",
+        "entityId": 5,
+        "details": "Assigned RoleId 3",
+        "changedAt": "2026-06-04T10:00:00Z"
+    },
+    {
+        "auditLogId": 2,
         "userId": 2,
         "username": "manager1",
         "action": "Invoice Created",
-        "entityType": "Invoice",
+        "entityName": "Invoice",
         "entityId": 1,
-        "timestamp": "2026-06-04T10:00:00Z"
+        "details": "Amount: 5000.00",
+        "changedAt": "2026-06-04T10:15:00Z"
     }
 ]
 ```
@@ -505,78 +751,170 @@ Response:
 
 ## 8. DATABASE SCHEMA
 
+### FinanceBillingDbContext Configuration
+
+```csharp
+public class FinanceBillingDbContext : DbContext
+{
+    public DbSet<Role> Roles => Set<Role>();
+    public DbSet<User> Users => Set<User>();
+    public DbSet<UserApproval> UserApprovals => Set<UserApproval>();
+    public DbSet<Invoice> Invoices => Set<Invoice>();
+    public DbSet<Payment> Payments => Set<Payment>();
+    public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(
+            typeof(FinanceBillingDbContext).Assembly);
+    }
+}
+```
+
 ### Entity Relationships
 
 ```
-Role (1) ─── (M) User
-                 ├─ ClientInvoices ─── (M) Invoice
-                 ├─ ManagedInvoices ─── (M) Invoice
-                 └─ AuditLogs ─── (M) AuditLog
+Role (1) ──────────── (M) User
+                          ├─ ClientInvoices ────── (M) Invoice
+                          ├─ ManagedInvoices ────── (M) Invoice
+                          └─ AuditLogs ─────────── (M) AuditLog
 
-Invoice (1) ─── (M) Payment
+                       Invoice (1) ────── (M) Payment
+
+UserApproval
+    ├─ User (FK)
+    ├─ ApprovedByUser (FK)
+    └─ AssignedRole (FK)
 ```
 
 ### Tables Overview
 
 | Table | Purpose | Key Fields |
 |-------|---------|-----------|
-| Roles | User role definitions | RoleId, RoleName |
-| Users | User accounts | UserId, Username, Email, PasswordHash, RoleId |
-| UserApprovals | Approval workflow | ApprovalId, UserId, Status, ApprovedBy |
-| Invoices | Invoice records | InvoiceId, ClientUserId, TotalAmount, Status |
-| Payments | Payment records | PaymentId, InvoiceId, AmountPaid, PaymentMethod |
-| AuditLogs | Audit trail | AuditLogId, UserId, Action, EntityType |
+| **Roles** | User role definitions | RoleId (PK), RoleName (nvarchar(50)) |
+| **Users** | User accounts | UserId (PK), Username (unique), Email (unique), PasswordHash, RoleId (FK), IsApproved, IsActive, CreatedAt, LastLoginAt |
+| **UserApprovals** | Approval workflow | ApprovalId (PK), UserId (FK), ApprovedByUserId (FK), AssignedRoleId (FK), ApprovedAt, Remarks |
+| **Invoices** | Invoice records | InvoiceId (PK), ClientUserId (FK), CreatedByManagerId (FK), InvoiceDate, DueDate, TotalAmount (decimal 18,2), Status (int), CreatedAt |
+| **Payments** | Payment records | PaymentId (PK), InvoiceId (FK), AmountPaid (decimal 18,2), PaymentMethod (nvarchar(50)), PaymentDate |
+| **AuditLogs** | Audit trail | AuditLogId (PK), UserId (FK), Action (nvarchar(100)), EntityName (nvarchar(100)), EntityId, Details, ChangedAt |
 
 ### Connection String
+```json
+{
+    "ConnectionStrings": {
+        "DefaultConnection": "Server=localhost\\SQLEXPRESS;Database=CapstoneFinanceBillingDb;Trusted_Connection=True;TrustServerCertificate=True;Encrypt=false"
+    }
+}
 ```
-Server=localhost\SQLEXPRESS;
-Database=CapstoneFinanceBillingDb;
-Trusted_Connection=True;
-TrustServerCertificate=True;
-Encrypt=false
+
+### Default Seed Data
+
+**Admin User (Created in UserConfiguration):**
+```
+UserId: 1
+Username: admin
+Email: admin@financebilling.com
+PasswordHash: $2a$11$Qee9OEZPJufoclI.3.Bjc.RehRX3mE/5HdnOmOIdEakPl9Amr/Tvq
+RoleId: 1
+IsApproved: true
+IsActive: true
+CreatedAt: 2025-01-01 00:00:00 UTC
 ```
 
 ---
 
 ## 9. AUTHENTICATION & SECURITY
 
-### JWT (JSON Web Token) Implementation
+### JWT Implementation
 
 #### Token Structure
 Header.Payload.Signature
 
-#### Token Configuration
+#### JWT Configuration
 ```json
 {
     "Jwt": {
         "Key": "FinanceBillingSecretKey2025@123456789",
         "Issuer": "FinanceBilling.API",
-        "Audience": "FinanceBilling.Client"
+        "Audience": "FinanceBilling.Client",
+        "ExpirationMinutes": 60
     }
 }
 ```
 
+#### Token Claims
+```csharp
+{
+    "sub": "1",                    // UserId
+    "unique_name": "username",     // Username
+    "role": "Manager",             // User Role
+    "iss": "FinanceBilling.API",   // Issuer
+    "aud": "FinanceBilling.Client" // Audience
+}
+```
+
 ### Password Security
+
+#### BCrypt Implementation
 - **Algorithm:** BCrypt with salt
-- **Cost Factor:** 11 (default)
-- **Hashing:** One-way encryption for password storage
-- **Never Stored:** Plain text passwords are never stored
+- **Cost Factor:** 11 (configurable)
+- **Hashing:** One-way encryption
+- **Storage:** Plain text passwords never stored
+
+**PasswordService Methods:**
+```csharp
+public string HashPassword(string password)
+{
+    // Uses BCrypt.Net-Next library
+    // Generates salt and hashes with cost factor 11
+}
+
+public bool VerifyPassword(string password, string hash)
+{
+    // Compares input password against stored hash
+    // Returns true if match, false otherwise
+}
+```
 
 ### Authorization & Role-Based Access Control
 
 #### Role Hierarchy
-1. **Admin:** Full system access, user approval, dashboard access
-2. **Manager:** Create invoices, process payments, view audit logs
-3. **Client:** View own invoices, track payments
+1. **Admin** (RoleId: 1)
+   - Manage users
+   - Approve new registrations
+   - View all audit logs
+   - Full system access
+
+2. **Manager** (RoleId: 2)
+   - Create and manage invoices
+   - Process payments
+   - View audit logs
+   - View financial reports
+
+3. **Client** (RoleId: 3)
+   - View own invoices
+   - View payment history
+   - Limited system access
+
+#### Authorization Attributes
+```csharp
+[Authorize]                      // Requires valid JWT token
+[Authorize(Roles = "Admin")]     // Requires Admin role
+[Authorize(Roles = "Manager")]   // Requires Manager role
+```
 
 ### Security Best Practices Implemented
-1. HTTPS/TLS: All connections encrypted
-2. CORS: Cross-Origin Resource Sharing configuration
-3. SQL Injection Prevention: Parameterized queries via EF Core
-4. XSS Protection: Input validation and sanitization
-5. CSRF Protection: Token validation in requests
-6. Audit Logging: All actions logged for compliance
-7. Error Handling: Generic error messages (no sensitive info leakage)
+
+1. **HTTPS/TLS:** All connections encrypted in production
+2. **JWT Validation:** Token signature and expiration verified
+3. **Password Hashing:** BCrypt with salt for all passwords
+4. **SQL Injection Prevention:** Entity Framework Core parameterized queries
+5. **XSS Protection:** Input validation and output encoding
+6. **CSRF Protection:** Token-based validation
+7. **Audit Logging:** All user actions logged with timestamps
+8. **Error Handling:** Generic error messages (no sensitive info leakage)
+9. **Unique Constraints:** Username and Email have database unique indexes
+10. **Access Control:** Role-based authorization on all protected endpoints
 
 ---
 
@@ -586,12 +924,13 @@ Header.Payload.Signature
 ```json
 {
     "ConnectionStrings": {
-        "DefaultConnection": "Server=localhost\\SQLEXPRESS;Database=CapstoneFinanceBillingDb;..."
+        "DefaultConnection": "Server=localhost\\SQLEXPRESS;Database=CapstoneFinanceBillingDb;Trusted_Connection=True;TrustServerCertificate=True;Encrypt=false"
     },
     "Jwt": {
         "Key": "FinanceBillingSecretKey2025@123456789",
         "Issuer": "FinanceBilling.API",
-        "Audience": "FinanceBilling.Client"
+        "Audience": "FinanceBilling.Client",
+        "ExpirationMinutes": 60
     },
     "Logging": {
         "LogLevel": {
@@ -603,12 +942,32 @@ Header.Payload.Signature
 }
 ```
 
-### Dependency Injection Container Configuration
+### Dependency Injection Configuration
 
-The DependencyInjection.cs file configures all services and repositories:
-- User, Invoice, Payment, AuditLog repositories
-- Auth, User, Invoice, Payment, Dashboard services
-- Password and JWT token services
+**DependencyInjection.cs:**
+```csharp
+public static IServiceCollection AddInfrastructure(
+    this IServiceCollection services)
+{
+    // Register Repositories
+    services.AddScoped<IUserRepository, UserRepository>();
+    services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+    services.AddScoped<IPaymentRepository, PaymentRepository>();
+    services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+
+    // Register Security Services
+    services.AddScoped<IPasswordService, PasswordService>();
+    services.AddScoped<IJwtTokenService, JwtTokenService>();
+
+    // Register Business Logic Services
+    services.AddScoped<IAuthService, AuthService>();
+    services.AddScoped<IUserService, UserService>();
+    services.AddScoped<IInvoiceService, InvoiceService>();
+    services.AddScoped<IPaymentService, PaymentService>();
+
+    return services;
+}
+```
 
 ---
 
@@ -625,7 +984,7 @@ The DependencyInjection.cs file configures all services and repositories:
 #### Step 1: Clone Repository
 ```bash
 git clone https://github.com/Uday-kumar-06/DotNet_Journey.git
-cd DotNet_Journey/Capstone\ Project/FinanceBillingSolution
+cd "DotNet_Journey/Capstone Project/FinanceBillingSolution"
 ```
 
 #### Step 2: Database Setup
@@ -638,7 +997,7 @@ cd FinanceBilling.API
 dotnet ef database update --project ../FinanceBilling.Infrastructure
 ```
 
-#### Step 3: Build Solution
+#### Step 3: Restore and Build
 ```bash
 dotnet restore
 dotnet build
@@ -649,27 +1008,60 @@ dotnet build
 cd FinanceBilling.API
 dotnet run
 # Application runs on: https://localhost:7000
-```
-
-#### Step 5: Access Swagger UI
-```
-https://localhost:7000/swagger
+# Swagger UI: https://localhost:7000/swagger
 ```
 
 ### First Steps with API
 
-1. **Register a User**
+#### 1. Register as New User
 ```bash
 curl -X POST https://localhost:7000/api/auth/register \
   -H "Content-Type: application/json" \
-  -d '{"username": "testuser", "email": "test@example.com", "password": "TestPass@123"}'
+  -d '{
+    "username": "testuser",
+    "email": "test@example.com",
+    "password": "TestPass@123"
+  }'
+
+Response: "Registration submitted. Awaiting approval."
 ```
 
-2. **Login**
+#### 2. Login as Admin (Existing)
 ```bash
 curl -X POST https://localhost:7000/api/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"username": "testuser", "password": "TestPass@123"}'
+  -d '{
+    "username": "admin",
+    "password": "Admin@123"
+  }'
+
+Response:
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "username": "admin",
+    "role": "Admin"
+}
+```
+
+#### 3. Approve Pending User
+```bash
+curl -X POST https://localhost:7000/api/users/approve \
+  -H "Authorization: Bearer {ADMIN_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "userId": 5,
+    "roleId": 3
+  }'
+```
+
+#### 4. Login as Approved User
+```bash
+curl -X POST https://localhost:7000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "testuser",
+    "password": "TestPass@123"
+  }'
 ```
 
 ---
@@ -678,16 +1070,16 @@ curl -X POST https://localhost:7000/api/auth/login \
 
 ### Test Structure
 
-The project includes comprehensive unit tests using **xUnit** and **Moq**:
+Unit tests are implemented using **xUnit** and **Moq** framework.
 
-#### Test Coverage
+#### Test Classes
 
-| Test Class | Tests | Areas |
-|-----------|-------|-------|
-| AuthServiceTests | 8 | Register, Login validation |
-| UserServiceTests | 5 | User approval, retrieval |
-| InvoiceServiceTests | 4 | Invoice creation, retrieval |
-| PaymentServiceTests | 6 | Payment processing, status updates |
+| Test Class | Test Methods | Coverage |
+|-----------|--------------|----------|
+| AuthServiceTests | 8 | Register, Login, Password validation |
+| UserServiceTests | 5 | User approval, retrieval, client lookup |
+| InvoiceServiceTests | 4 | Invoice creation, retrieval, client invoices |
+| PaymentServiceTests | 6 | Payment creation, status updates, retrieval |
 
 ### Running Tests
 
@@ -701,126 +1093,274 @@ dotnet test Tests/AuthServiceTests.cs
 
 # Run with verbose output
 dotnet test --verbosity detailed
+
+# Run with coverage
+dotnet test /p:CollectCoverage=true
 ```
 
 #### Using Visual Studio
 1. Open Test Explorer (Test → Test Explorer)
-2. Click "Run All"
-3. View results in Test Explorer window
+2. Build solution first
+3. Click "Run All" button
+4. View results in Test Explorer window
+
+### Mock Configuration
+Tests use Moq for mocking repository dependencies:
+```csharp
+var mockUserRepository = new Mock<IUserRepository>();
+mockUserRepository
+    .Setup(x => x.GetByUsernameAsync("username"))
+    .ReturnsAsync(user);
+
+var authService = new AuthService(
+    mockUserRepository.Object,
+    passwordService,
+    jwtTokenService);
+```
 
 ---
 
 ## 13. DEPLOYMENT
 
 ### Pre-Deployment Checklist
-- All tests passing
-- No compiler warnings
-- Environment configurations set
-- Database backups created
-- Security review completed
+- [ ] All unit tests passing
+- [ ] No compiler warnings
+- [ ] Code review completed
+- [ ] Database migrations tested
+- [ ] Security audit completed
+- [ ] JWT secret key changed for production
+- [ ] Connection string updated for production DB
+- [ ] Error handling verified
+- [ ] Logging configured appropriately
 
 ### Production Build
 ```bash
 # Build for production
 dotnet publish -c Release -o ./publish
+
+# Output location: ./publish folder
 ```
 
 ### Deployment Steps
 1. Copy published files to server
-2. Configure connection strings for production database
-3. Update JWT secret key for production
-4. Apply database migrations
-5. Start application service
+2. Update connection string for production database
+3. Update JWT configuration for production environment
+4. Apply database migrations to production DB
+5. Configure HTTPS/SSL certificates
+6. Start application service
+7. Monitor logs for errors
+
+### Environment Variables
+```bash
+ConnectionStrings__DefaultConnection=Server=prod-server;Database=FinanceBilling;...
+Jwt__Key=ProductionSecretKey...
+Jwt__ExpirationMinutes=120
+```
 
 ---
 
 ## 14. BEST PRACTICES
 
 ### Code Organization
-- Follow SOLID principles
-- Use dependency injection
+- Follow SOLID principles (Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion)
+- Use dependency injection for testability
 - Implement interface segregation
 - Keep classes single-responsibility
+- Use repository pattern for data access
 
 ### Error Handling
-- Catch specific exceptions
-- Log meaningful error messages
+- Catch specific exceptions, not generic Exception
+- Log meaningful error messages with context
 - Return appropriate HTTP status codes
-- Avoid exposing internal details
+- Avoid exposing internal implementation details
+- Provide user-friendly error messages
 
 ### Async/Await
-- Use async for I/O operations
-- Avoid blocking calls with .Result
+- Use async for all I/O operations
+- Avoid blocking calls with .Result or .Wait()
 - Properly await all async methods
+- Use ConfigureAwait(false) in library code
 
 ### Naming Conventions
-- Classes: PascalCase (UserService)
-- Methods: PascalCase (GetUserAsync)
-- Properties: PascalCase (Username)
-- Private fields: _camelCase (_userRepository)
-- Local variables: camelCase (userName)
+- **Classes:** PascalCase (UserService, AuthController)
+- **Methods:** PascalCase (GetByIdAsync, RegisterAsync)
+- **Properties:** PascalCase (Username, InvoiceDate)
+- **Private fields:** _camelCase (_userRepository, _passwordService)
+- **Parameters:** camelCase (userId, createInvoiceDto)
+- **Constants:** UPPER_CASE (CONNECTION_TIMEOUT)
 
-### Database Queries
-- Use Include() for related data
-- Avoid N+1 query problems
+### Database Access
+- Use Include() for related data to avoid N+1 queries
+- Implement pagination for large result sets
 - Use AsNoTracking() for read-only queries
-- Implement pagination for large datasets
+- Validate foreign keys exist before creating relationships
+- Use transactions for multi-step operations
+
+### Entity Framework Core
+- Configure entities using Fluent API
+- Use migrations for schema changes
+- Enable lazy loading judiciously
+- Use compiled queries for frequently used queries
+- Configure column constraints properly
 
 ---
 
 ## 15. TROUBLESHOOTING
 
-### Common Issues
+### Common Issues & Solutions
 
 #### Database Connection Error
-**Solution:**
-- Verify SQL Server is running
-- Check connection string in appsettings.json
-- Ensure database exists and user has permissions
+**Error:** Connection string invalid or database unreachable
+
+**Solutions:**
+1. Verify SQL Server is running
+2. Check connection string in appsettings.json
+3. Ensure database exists: `CapstoneFinanceBillingDb`
+4. Verify user has permissions to create/access database
+5. Check firewall allows SQL Server connection
 
 #### JWT Token Validation Failed
-**Solution:**
-- Verify JWT key matches in appsettings.json
-- Check token hasn't expired
-- Ensure Bearer scheme in Authorization header
+**Error:** 401 Unauthorized on protected endpoints
+
+**Solutions:**
+1. Verify JWT key matches in appsettings.json
+2. Check token hasn't expired
+3. Ensure Bearer scheme in Authorization header: `Authorization: Bearer {token}`
+4. Verify token is properly formatted (Header.Payload.Signature)
+5. Check token claims match expected values
 
 #### Migration Not Applied
-**Solution:**
+**Error:** Tables not found in database
+
+**Solutions:**
 ```bash
-dotnet ef migrations add InitialCreate --project FinanceBilling.Infrastructure
+# List existing migrations
+dotnet ef migrations list
+
+# Create new migration if needed
+dotnet ef migrations add MigrationName --project FinanceBilling.Infrastructure
+
+# Apply pending migrations
 dotnet ef database update --project FinanceBilling.Infrastructure
+
+# View migration status
+dotnet ef database update --project FinanceBilling.Infrastructure -- verbose
 ```
 
 #### Port Already in Use
-**Solution:**
+**Error:** Unable to start application, port 7000 in use
+
+**Solutions:**
 ```bash
-# Find process using port 7000
+# Linux/Mac: Find process using port
 lsof -i :7000
-# Kill process and retry
+
+# Windows: Find process using port
+netstat -ano | findstr :7000
+
+# Kill process (Linux/Mac)
+kill -9 <PID>
+
+# Kill process (Windows)
+taskkill /PID <PID> /F
+
+# Or run on different port
+dotnet run --urls https://localhost:7001
 ```
 
-#### Authentication Fails for New User
-**Solution:**
-- Admin user must approve new registrations first
-- Use admin account to approve user
-- Then attempt login with new user
+#### User Not Approved
+**Error:** "Account pending approval" when trying to login
 
-### Health Check Endpoint
-```
-GET https://localhost:7000/api/health
-```
+**Solutions:**
+1. Use admin account to approve user first
+2. Call: `POST /api/users/approve` with proper RoleId
+3. Then attempt login with new user
+4. Check database: `SELECT * FROM Users WHERE Username = 'username'`
+5. Verify IsApproved = 1 in database
+
+#### Password Verification Failed
+**Error:** Login fails with correct password
+
+**Solutions:**
+1. Verify password hashing with BCrypt
+2. Check PasswordHash field not corrupted in database
+3. Ensure VerifyPassword method working correctly
+4. Verify password meets requirements
+5. Clear browser cache and retry
+
+#### Entity Validation Errors
+**Error:** DbUpdateException on save
+
+**Solutions:**
+1. Check all required fields are populated
+2. Verify foreign key relationships are valid
+3. Check string length constraints
+4. Verify decimal precision for amounts
+5. Check unique constraints (Username, Email)
+
+#### Missing or Invalid Configuration
+**Error:** Configuration section not found
+
+**Solutions:**
+1. Verify appsettings.json exists in API project
+2. Check JSON syntax is valid
+3. Verify all required sections present (ConnectionStrings, Jwt)
+4. Check environment-specific config (appsettings.Production.json)
+5. Verify User Secrets configured if using Secret Manager
+
+### Debug Checklist
+- [ ] Check application logs for errors
+- [ ] Verify database connectivity
+- [ ] Confirm JWT token validity
+- [ ] Check user roles and permissions
+- [ ] Review database schema
+- [ ] Validate input data
+- [ ] Check SQL queries in logs
+- [ ] Verify configuration values
+- [ ] Test with Swagger UI
+- [ ] Use debugger to step through code
 
 ---
 
 ## CONCLUSION
 
-FinanceBillingSolution is a production-ready financial management system built on modern .NET technologies. It follows industry best practices for security, testing, and architecture, making it scalable and maintainable for enterprise environments.
+FinanceBillingSolution is a production-ready financial management system built on modern .NET 8 technologies. It follows industry best practices for security, testing, and architecture, making it scalable, maintainable, and secure.
 
-For more information, refer to inline code comments, XML documentation, and the GitHub repository.
+### Key Achievements
+- ✅ Clean Architecture with clear separation of concerns
+- ✅ Repository Pattern for flexible data access
+- ✅ JWT-based authentication with BCrypt password hashing
+- ✅ Role-based authorization with three-tier role structure
+- ✅ Comprehensive audit logging for compliance
+- ✅ Entity Framework Core with migrations
+- ✅ Unit testing with xUnit and Moq
+- ✅ RESTful API with Swagger documentation
+- ✅ Automatic invoice status updates based on payment logic
+- ✅ User approval workflow for registration
+
+### Future Enhancements
+- Implement email notifications for invoice creation and payment reminders
+- Add dashboard analytics with charts and graphs
+- Implement payment gateway integration (Stripe, PayPal)
+- Add invoice PDF export functionality
+- Implement multi-tenancy support
+- Add advanced reporting and filtering
+- Implement real-time notifications using SignalR
+- Add invoice templates customization
+- Implement recurring invoices
+- Add API rate limiting and throttling
+
+### Support & Documentation
+For more information, refer to:
+- Inline code comments throughout the project
+- XML documentation on public methods
+- GitHub repository: https://github.com/Uday-kumar-06/DotNet_Journey
+- Test files for usage examples
 
 ---
 
-**Document Version:** 1.0  
+**Document Version:** 2.0  
 **Last Updated:** June 4, 2026  
 **Repository:** https://github.com/Uday-kumar-06/DotNet_Journey  
-**Status:** Active Development
+**Status:** Active Development  
+**Language Composition:** C# (69.9%), HTML (21.7%), CSS (4.6%), TypeScript (1.4%), JavaScript (1.3%), T-SQL (1.1%)
