@@ -192,11 +192,7 @@
                     </span>
 
                     <div class="text-muted">
-
-                        @activity.ChangedAt
-                        .ToString(
-                        "dd-MMM-yyyy HH:mm")
-
+                        @(activity.ChangedAt.ToString("dd-MMM-yyyy HH:mm"))
                     </div>
 
                 </div>
@@ -219,15 +215,26 @@
 
     <div class="card-body">
 
-        <h4>
-            Finance Overview
-        </h4>
+        <h4>Collection Progress</h4>
 
-        <p class="text-muted">
+        @{
+            var percentage =
+                Model.TotalBilled == 0
+                ? 0
+                : (Model.TotalCollected / Model.TotalBilled) * 100;
+        }
 
-            Analytics charts will appear here.
+        <div class="progress mt-3" style="height:30px;">
 
-        </p>
+            <div class="progress-bar bg-success"
+                 role="progressbar"
+                 style="width:@percentage%">
+
+                @percentage.ToString("N0")%
+
+            </div>
+
+        </div>
 
     </div>
 

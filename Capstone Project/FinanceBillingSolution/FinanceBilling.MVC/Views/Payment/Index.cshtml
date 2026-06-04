@@ -8,7 +8,7 @@
 
     <h2>Payments</h2>
 
-    @if (User.IsInRole("Manager"))
+    @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
     {
         <button class="btn btn-primary"
                 data-bs-toggle="modal"
@@ -70,7 +70,7 @@
 
 </div>
 
-@if (User.IsInRole("Manager"))
+@if (User.IsInRole("Manager") || User.IsInRole("Admin"))
 {
     <div class="modal fade"
          id="paymentModal"

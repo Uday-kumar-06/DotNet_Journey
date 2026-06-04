@@ -53,7 +53,7 @@ public class PaymentController : Controller
     }
 
     [HttpPost]
-    [Authorize(Roles = "Manager")]
+    [Authorize(Roles = "Manager,Admin")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
         [FromBody] CreatePaymentViewModel model)

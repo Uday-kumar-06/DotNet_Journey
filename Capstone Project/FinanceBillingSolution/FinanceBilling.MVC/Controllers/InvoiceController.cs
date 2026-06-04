@@ -54,7 +54,7 @@ public class InvoiceController : Controller
     }
 
     [HttpPost]
-    [Authorize(Roles = "Manager")]
+    [Authorize(Roles = "Manager,Admin")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
     [FromBody] CreateInvoiceViewModel model)
@@ -97,7 +97,7 @@ public class InvoiceController : Controller
     }
 
     [HttpGet]
-    [Authorize(Roles = "Manager")]
+    [Authorize(Roles = "Manager,Admin")]
     public async Task<IActionResult> GetClients()
     {
         var token =
