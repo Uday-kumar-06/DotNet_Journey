@@ -1,0 +1,23 @@
+<h1>Book Store Pro</h1>
+
+<h2>Manual Subscribe</h2>
+
+@for(book of books; track book.id){
+
+<app-book-card
+  [book]="book">
+</app-book-card>
+
+}
+
+<hr>
+
+<h2>Async Pipe</h2>
+
+@for(book of (books$ | async) ?? []; track book.id){
+
+<app-book-card
+  [book]="book">
+</app-book-card>
+
+}
